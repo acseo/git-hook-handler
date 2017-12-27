@@ -71,18 +71,11 @@ class Handler extends Application
             $process->setTimeout(null);
             $output->writeln([" <comment>Executed command :</comment>",'']);
             $output->writeln("  ".str_replace('&&', "&& \\ \n ", $groupData['command']));
-            if ($process->run() === 1) {
-                $output->writeln(' Failed.');
-                $output->writeln("<error>{$command} failed</error>");
-                $output->writeln($process->getOutput());
-                $output->writeln("<error>{$command} failed</error>");
-
-                return 1;
-            }
+            $process->run();
 
             $output->writeln([" <comment>Command Result :</comment>",'']);
 
-            $output->writeln("  ".$process->getOutput());
+            $output->writeln($process->getOutput());
 
             $exitCode = $process->getExitCode();
             if (isset($groupData['exitcode']) && $groupData['exitcode'] != $exitCode) {
