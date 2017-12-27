@@ -63,8 +63,8 @@ class Handler extends Application
         }
 
         $output->writeln("<comment>Running $this->hook hook </comment>");
+        $error = false;
         foreach ($this->categories[$this->hook] as $group => $groupData) {
-
             $output->writeln(['', "<comment> $group hook </comment> : ".$groupData['description']]);
 
             $process = new Process($groupData['command'], __DIR__ . '../../');
@@ -86,12 +86,10 @@ class Handler extends Application
 
             $exitCode = $process->getExitCode();
             if (isset($groupData['exitcode']) && $groupData['exitcode'] != $exitCode) {
-                $output->writeln("<error>Result is different than expected. Exiting");
-                return -1;
-            }
-            else {
-                $output->writeln(' Success.');
-                return 0;
+                $output->writeln(" <error>$group : Exit Code for Hook ($exitCode) is different than expected (".$groupData['exitcode'].")</error>");
+                $error = true;
+            } else {
+                $output->writeln(" <info>$group : Success.</info>");
             }
         }
 
@@ -103,5 +101,10 @@ class Handler extends Application
                 ''
             ]
         );
+
+        if ($error) {
+            return -1;
+        }
+        return 0;
     }
 }
