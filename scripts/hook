@@ -14,6 +14,7 @@ if (file_exists($config)) {
 }
 
 $handler = new \Aequasi\HookHandler\Handler($commands, basename(__FILE__));
+$handler->setAutoExit(false);
 
 $exitCode = $handler->run();
 
