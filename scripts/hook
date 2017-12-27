@@ -18,7 +18,7 @@ $handler->setAutoExit(false);
 
 $exitCode = $handler->run();
 
-if (isset($commands['config']) && isset($command['config']['commit-on-error']) && $command['config']['commit-on-error']) {
+if (isset($commands['config']) && isset($commands['config']['commit-on-error']) && $commands['config']['commit-on-error']) {
     exit(0);
 }
 
